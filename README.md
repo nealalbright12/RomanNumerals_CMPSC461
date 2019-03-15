@@ -1,5 +1,3 @@
-# RomanNumerals_CMPSC461
-
-### PROJECT LOG ###
+# PROJECT LOG ###
 
 Just uploading the starter files 
