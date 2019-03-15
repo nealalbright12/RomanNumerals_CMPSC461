@@ -1,0 +1,5 @@
+	Result: 24.400000
+	Result: 24
+	Result: 1509.999977
+	Result: 168
+	Result: -51.890000
