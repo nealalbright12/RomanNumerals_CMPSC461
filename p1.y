@@ -38,7 +38,7 @@ Expr: Var T_LINE
     | Var T_PLUS Var T_LINE   { $$ = $1 + $3; }
     | Var T_MINUS Var T_LINE  { $$ = $1 - $3; }
     | Var T_TIMES Var T_LINE  { $$ = $1 * $3; }
-    | Var T_DIVIDE Var T_LINE { $$ = $1 / $3; }
+    | Var T_DIVIDE Var T_LINE { $$ = $1 / (float)$3; }
 ;
 
 Var: Num       { $$ = $1 }
@@ -51,9 +51,9 @@ Num: Ones                { $$ = $1 }
    | Hundreds Tens Ones  { $$ = $1 + $2 + $3 }
 ;
 
-Frac: Ones               { $$ = ($1)/10
-    | Tens Ones          { $$ = ($1 + $2) / 100 }
-    | Hundreds Tens Ones { $$ = ($1 + $2 + $3) / 1000 }
+Frac: Ones               { $$ = (float)($1)/10
+    | Tens Ones          { $$ = (float)($1 + $2) / 100 }
+    | Hundreds Tens Ones { $$ = (float)($1 + $2 + $3) / 1000 }
 ;
 
 Hundreds: // Epsilon
@@ -63,13 +63,28 @@ Hundreds: // Epsilon
 ;	
 
 Tens: // Epsilon
+    | T_X T_C		 { $$ = 90 }
     | T_L T_X T_X T_X    { $$ = 80 }
     | T_L T_X T_X        { $$ = 70 }
     | T_L T_X            { $$ = 60 }
-    | T_X T_C		 { $$ = 90 }
     | T_X T_L		 { $$ = 40 }
-    | ////****** LEFT OFF HERE ******////
+    | T_X T_X T_X	 { $$ = 30 }
+    | T_X T_X		 { $$ = 20 }
+    | T_X		 { $$ = 10 }
+    | T_L		 { $$ = 50 }
+;
 
+Ones: // Epsilon
+    | T_I T_X		 { $$ = 9 }
+    | T_V T_I T_I T_I    { $$ = 8 }
+    | T_V T_I T_I        { $$ = 7 }
+    | T_V T_I            { $$ = 6 }
+    | T_I T_V		 { $$ = 4 }
+    | T_I T_I T_I	 { $$ = 3 }
+    | T_I T_I		 { $$ = 2 }
+    | T_I		 { $$ = 1 }
+    | T_V		 { $$ = 5 }
+;
 %%
 
 int main() {
