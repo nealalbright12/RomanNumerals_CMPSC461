@@ -12,12 +12,38 @@ extern FILE* yyin;
 void yyerror(const char* s);
 %}
 
+%union{
+  float fval;
+  
+}
+
+%token<fval> T_FLOAT
+%token T_PLUS T_MINUS T_TIMES T_DIVIDE
+%token T_LINE
 
 %token T_C T_Y T_R T_E T_H T_TEST // You need to define your tokens from flex here.
 				  // op, decimalPoint, huns, tens, ones
 				  // frac, wholenum?
+%type<fval> Num
+%start Expr
 
 %%
+
+Expr: Var
+     |Var Op Var
+;
+
+Var: Num
+     |Num.Num
+     |.Num
+;
+
+Num: Ones
+     |Tens
+     |Hundreds
+;
+
+
 
 YOURGRAMMAR: SOMETHINGELSE
 	| //Epsilon
