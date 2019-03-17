@@ -6,6 +6,7 @@ Op   -> +
      |  *
 Var  -> Num
      |  Num.Num
+     |  .Num
 Num  -> NumNum
      |  I     1
      |  V     5
