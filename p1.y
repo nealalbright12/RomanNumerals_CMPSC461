@@ -14,6 +14,8 @@ void yyerror(const char* s);
 
 
 %token T_C T_Y T_R T_E T_H T_TEST // You need to define your tokens from flex here.
+				  // op, decimalPoint, huns, tens, ones
+				  // frac, wholenum?
 
 %%
 
