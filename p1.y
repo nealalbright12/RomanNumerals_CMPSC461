@@ -25,17 +25,23 @@ void yyerror(const char* s);
 				  // op, decimalPoint, huns, tens, ones
 				  // frac, wholenum?
 %type<fval> Num
-%start Expr
+%start Input        // changed Expr to Input, for multi-line functionality
 
 %%
+Input:		    // Input is all the exressions to be read
+     | Expr Input   { printf("Result: %f\n", $1); }
+;
 
-Expr: Var
-     |Var Op Var
+Expr: Var T_LINE
+    | Var T_PLUS Var T_LINE
+    | Var T_MINUS Var T_LINE
+    | Var T_TIMES Var T_LINE
+    | Var T_DIVIDE Var T_LINE
 ;
 
 Var: Num
-     |Num.Num
-     |.Num
+   | Num.Num
+   | .Num
 ;
 
 Num: Ones
