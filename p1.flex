@@ -10,10 +10,15 @@
 %}
 
 %%
-"CREATE" {return T_C;}   
-"YOUR" {return T_Y;}   
-"REGULAR" {return T_R;}   
-"EXPRESSIONS" {return T_E;}   
-"HERE" {return T_H;}
-"CMPSC461" {return T_TEST;}
+"I" {return T_I;}   
+"V" {return T_V;}   
+"X" {return T_X;}   
+"L" {return T_L;}   
+"C" {return T_C;}
+"." {return T_POINT;}
+"+" {return T_PLUS;}
+"-" {return T_MINUS;}
+"*" {return T_TIMES;}
+"/" {return T_DIVIDE;}
+\n  {return T_LINE;}
 %%

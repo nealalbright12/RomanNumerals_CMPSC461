@@ -1,4 +1,9 @@
 %{
+// ROMAN NUMERAL PARSER
+// CMPSC 461 PROJECT 1
+// Neal Albright
+// Ryan Waitlevertch
+// bison component
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -17,31 +22,27 @@ void yyerror(const char* s);
   
 }
 
-%token<fval> T_FLOAT
+%token T_I T_V T_X T_L T_C
 %token T_PLUS T_MINUS T_TIMES T_DIVIDE
 %token T_LINE T_POINT
 
-//%token T_C T_Y T_R T_E T_H T_TEST // You need to define your tokens from flex here.
-//				  // op, decimalPoint, huns, tens, ones
-//				  // frac, wholenum?
-
-%type<fval> Num
+%type<fval> Expr Var Num Frac Hundreds Tens Ones
 %start Input        // changed Expr to Input, for multi-line functionality
 
 %%
 // Input is all the exressions to be read
 Input: // Epsilon    
-     | Expr Input   { printf("Result: %f\n", $1); }
+     | Input Expr   { printf("\tResult: %f\n", $2); }
 ;
 
-Expr: Var T_LINE
+Expr: Var T_LINE              { $$ = $1 }
     | Var T_PLUS Var T_LINE   { $$ = $1 + $3; }
     | Var T_MINUS Var T_LINE  { $$ = $1 - $3; }
     | Var T_TIMES Var T_LINE  { $$ = $1 * $3; }
     | Var T_DIVIDE Var T_LINE { $$ = $1 / (float)$3; }
 ;
 
-Var: Num       { $$ = $1 }
+Var: Num                 { $$ = $1 }
    | Num T_POINT Frac    { $$ = $1 + $3 }
    | T_POINT Frac        { $$ = $2 }
 ;
@@ -51,9 +52,9 @@ Num: Ones                { $$ = $1 }
    | Hundreds Tens Ones  { $$ = $1 + $2 + $3 }
 ;
 
-Frac: Ones               { $$ = (float)($1)/10
-    | Tens Ones          { $$ = (float)($1 + $2) / 100 }
-    | Hundreds Tens Ones { $$ = (float)($1 + $2 + $3) / 1000 }
+Frac: Ones               { $$ = (float)($1)/10 }
+    | Tens Ones          { $$ = (float)($1 + $2)/100 }
+    | Hundreds Tens Ones { $$ = (float)($1 + $2 + $3)/1000 }
 ;
 
 Hundreds: // Epsilon
@@ -74,7 +75,7 @@ Tens: // Epsilon
     | T_L		 { $$ = 50 }
 ;
 
-Ones: // Epsilon
+Ones:                    { $$ = 0 }
     | T_I T_X		 { $$ = 9 }
     | T_V T_I T_I T_I    { $$ = 8 }
     | T_V T_I T_I        { $$ = 7 }
@@ -89,7 +90,6 @@ Ones: // Epsilon
 
 int main() {
 	yyin = stdin;
-
 	do {
 		yyparse();
 	} while(!feof(yyin));
